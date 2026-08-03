@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Login - PDF Library</title>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    body {
+      background: radial-gradient(circle at center, #1e1b4b, #0f172a);
+      color: #f8fafc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+    }
+    
+    /* Top Corner Logout Button */
+    .top-corner-logout { 
+      position: absolute; 
+      top: 20px; 
+      right: 20px; 
+    }
+
+    .btn-corner-logout { 
+      background: linear-gradient(135deg, #ef4444, #991b1b); 
+      border: none; 
+      color: #fff; 
+      padding: 8px 18px; 
+      border-radius: 20px; 
+      font-weight: 700; 
+      cursor: pointer; 
+      display: none;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .btn-corner-logout:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    /* Auth Card / Form Box */
+    .auth-card {
+      background: rgba(30, 27, 75, 0.85);
+      border: 2px solid #ff007f;
+      border-radius: 20px;
+      padding: 35px 30px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 0 35px rgba(255, 0, 127, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .auth-title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 800;
+      color: #ff007f;
+      margin-bottom: 25px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 15px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .input-group input:focus {
+      border-color: #ff007f;
+    }
+    
+    /* Forgot Password Link Style */
+    .forgot-pass-wrapper { 
+      text-align: right; 
+      margin-top: 8px; 
+    }
+
+    .forgot-pass-link { 
+      color: #ff007f; 
+      font-size: 13px; 
+      text-decoration: none; 
+      cursor: pointer; 
+      font-weight: 600; 
+      transition: color 0.2s;
+    }
+
+    .forgot-pass-link:hover { 
+      text-decoration: underline; 
+      color: #e00070;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #ff007f, #7928ca);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 0, 127, 0.4);
+      margin-top: 10px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .btn-submit:hover { 
+      opacity: 0.95; 
+      transform: translateY(-1px);
+    }
+
+    .link-text {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+
+    .link-text a {
+      color: #ff007f;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .link-text a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Corner Logout Button -->
+  <div class="top-corner-logout">
+    <button id="cornerLogoutBtn" class="btn-corner-logout" onclick="logoutFromLogin()">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+  </div>
+
+  <div class="auth-card">
+    <h2 class="auth-title"><i class="fa-solid fa-right-to-bracket"></i> User Login</h2>
+    
+    <form id="loginForm">
+      <div class="input-group">
+        <label>Email Address</label>
+        <input type="email" id="loginEmail" required placeholder="Enter registered email">
+      </div>
+      
+      <div class="input-group">
+        <label>Password</label>
+        <input type="password" id="loginPassword" required placeholder="Enter password">
+        
+        <div class="forgot-pass-wrapper">
+          <span class="forgot-pass-link" onclick="handleForgotPassword()">Forgot Password?</span>
+        </div>
+      </div>
+      
+      <button type="submit" class="btn-submit">LOGIN NOW</button>
+    </form>
+    
+    <div class="link-text">
+      Don't have an account? <a href="register.html">Register here</a>
+    </div>
+  </div>
+
+  <script>
+    // ১. পূর্ব থেকে লগইন সেশন চালু থাকলে চেনা
+    document.addEventListener("DOMContentLoaded", () => {
+      const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+      if (isLoggedIn === 'true') {
+        document.getElementById('cornerLogoutBtn').style.display = 'inline-block';
+      }
+    });
+
+    // ২. রেজিস্টার্ড তথ্যের সাথে লগইন ডেটা মিলিয়ে দেখা
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+      const password = document.getElementById('loginPassword').value.trim();
+      const savedUser = JSON.parse(localStorage.getItem('registeredUser'));
+
+      // রেজিস্ট্রেশনের ডাটা না থাকলে
+      if (!savedUser) {
+        alert('কোনো রেজিস্ট্রেশন করা অ্যাকাউন্ট পাওয়া যায়নি! দয়া করে আগে Register করুন।');
+        window.location.href = 'register.html';
+        return;
+      }
+
+      // ইমেইল এবং পাসওয়ার্ড ম্যাচিং যাচাইকরণ
+      if (savedUser.email.toLowerCase() === email && savedUser.password === password) {
+        sessionStorage.setItem('isLoggedIn', 'true');
+        alert('Login Successful! Redirecting to Home...');
+        window.location.href = 'index.html';
+      } else {
+        alert('ইমেইল অথবা পাসওয়ার্ড সঠিক নয়! রেজিস্ট্রেশনকৃত সঠিক তথ্য দিয়ে চেষ্টা করুন।');
+      }
+    });
+
+    // ৩. পাসওয়ার্ড ভুলে গেলে পুনর্নির্ধারণ লজিক
+    function handleForgotPassword() {
+      const emailInput = document.getElementById('loginEmail').value.trim().toLowerCase();
+      const savedUser = JSON.parse(localStorage.getItem('registeredUser'));
+
+      if (!emailInput) {
+        alert('পাসওয়ার্ড রিকভার করার জন্য অনুগ্রহ করে আপনার Email ইনপুট বক্সে লিখুন!');
+        return;
+      }
+
+      if (savedUser && savedUser.email.toLowerCase() === emailInput) {
+        const newPassword = prompt(`Email Verified: ${emailInput}\nঅনুগ্রহ করে আপনার নতুন পাসওয়ার্ড লিখুন (কমপক্ষে ৮টি অক্ষর, একটি বড় অক্ষর, একটি ছোট অক্ষর ও প্রতীকসহ):`);
+        
+        if (newPassword && newPassword.trim() !== '') {
+          const trimmedPass = newPassword.trim();
+          // পাসওয়ার্ড কন্ডিশন ভ্যালিডেশন
+          const isValid = trimmedPass.length >= 8 && 
+                          /[A-Z]/.test(trimmedPass) && 
+                          /[a-z]/.test(trimmedPass) && 
+                          /[?!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(trimmedPass);
+
+          if (!isValid) {
+            alert('পাসওয়ার্ডটি শর্তপূরণ করেনি! (কমপক্ষে ৮ অক্ষর, বড় হাতের, ছোট হাতের অক্ষর এবং প্রতীক আবশ্যক)');
+            return;
+          }
+
+          savedUser.password = trimmedPass;
+          localStorage.setItem('registeredUser', JSON.stringify(savedUser));
+          alert('আপনার পাসওয়ার্ড সফলভাবে আপডেট হয়েছে! নতুন পাসওয়ার্ড দিয়ে Login সম্পন্ন হচ্ছে...');
+          
+          sessionStorage.setItem('isLoggedIn', 'true');
+          window.location.href = 'index.html';
+        }
+      } else {
+        alert('এই Email দিয়ে কোনো রেজিস্ট্রেশন পাওয়া যায়নি! দয়া করে সঠিক ইমেইল দিন।');
+      }
+    }
+
+    // ৪. লগআউট লজিক
+    function logoutFromLogin() {
+      sessionStorage.removeItem('isLoggedIn');
+      alert('You have successfully logged out.');
+      document.getElementById('cornerLogoutBtn').style.display = 'none';
+    }
+  </script>
+</body>
+    </html>
