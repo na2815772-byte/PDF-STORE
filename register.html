@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - PDF Library</title>
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
+
+    body {
+      background: radial-gradient(circle at center, #0f172a, #020617);
+      color: #f8fafc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .form-box {
+      background: rgba(30, 41, 59, 0.85);
+      border: 2px solid #00f2fe;
+      border-radius: 20px;
+      padding: 30px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.25);
+      backdrop-filter: blur(10px);
+    }
+
+    .form-title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 800;
+      color: #00f2fe;
+      margin-bottom: 25px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 15px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .input-group input:focus {
+      border-color: #00f2fe;
+    }
+
+    /* Password Conditions Checklist */
+    .rules-list {
+      background: #0f172a;
+      border-radius: 8px;
+      padding: 12px 15px;
+      margin-bottom: 18px;
+      font-size: 12px;
+      border: 1px solid #334155;
+    }
+
+    .rules-title {
+      font-weight: bold;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+
+    .rule-item {
+      color: #ef4444;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s;
+    }
+
+    .rule-item.valid {
+      color: #22c55e;
+    }
+
+    /* Circular Verification Checkbox */
+    .verify-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .custom-checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #00f2fe;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .custom-checkbox i {
+      font-size: 10px;
+      color: transparent;
+    }
+
+    .verify-wrapper.checked .custom-checkbox {
+      background: #00f2fe;
+    }
+
+    .verify-wrapper.checked .custom-checkbox i {
+      color: #0f172a;
+    }
+
+    .verify-text {
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+      transition: opacity 0.2s;
+    }
+
+    .btn-submit:hover { 
+      opacity: 0.9; 
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #94a3b8;
+    }
+
+    .login-link a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-box">
+    <div class="form-title"> Registration</div>
+    
+    <form id="regForm">
+      <div class="input-group">
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" placeholder="Enter your full name" required>
+      </div>
+
+      <div class="input-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="Enter email address" required>
+      </div>
+
+      <div class="input-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="Enter phone number" required>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Create strong password" required>
+      </div>
+
+      <!-- Password Validation Rules -->
+      <div class="rules-list">
+        <div class="rules-title">Password Conditions:</div>
+        <div class="rule-item" id="rule-length"><i class="fa-solid fa-circle-xmark"></i> At least 8 characters</div>
+        <div class="rule-item" id="rule-upper"><i class="fa-solid fa-circle-xmark"></i> At least 1 uppercase letter (A-Z)</div>
+        <div class="rule-item" id="rule-lower"><i class="fa-solid fa-circle-xmark"></i> At least 1 lowercase letter (a-z)</div>
+        <div class="rule-item" id="rule-symbol"><i class="fa-solid fa-circle-xmark"></i> At least 1 symbol (?, !, @, #, etc.)</div>
+      </div>
+
+      <!-- Verification Checkmark -->
+      <div class="verify-wrapper" id="verifyBox">
+        <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+        <span class="verify-text">I confirm that all provided info is accurate.</span>
+      </div>
+
+      <button type="submit" class="btn-submit">REGISTER NOW</button>
+
+      <div class="login-link">
+        Already registered? <a href="login.html">Login here</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const passwordInput = document.getElementById('password');
+    const verifyBox = document.getElementById('verifyBox');
+    let isVerified = false;
+
+    // Password Real-time Check
+    passwordInput.addEventListener('input', () => {
+      const val = passwordInput.value;
+      
+      toggleRule('rule-length', val.length >= 8);
+      toggleRule('rule-upper', /[A-Z]/.test(val));
+      toggleRule('rule-lower', /[a-z]/.test(val));
+      toggleRule('rule-symbol', /[?!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(val));
+    });
+
+    function toggleRule(id, isValid) {
+      const el = document.getElementById(id);
+      const icon = el.querySelector('i');
+      if (isValid) {
+        el.classList.add('valid');
+        icon.className = 'fa-solid fa-circle-check';
+      } else {
+        el.classList.remove('valid');
+        icon.className = 'fa-solid fa-circle-xmark';
+      }
+    }
+
+    // Toggle Circle Verification
+    verifyBox.addEventListener('click', () => {
+      isVerified = !isVerified;
+      verifyBox.classList.toggle('checked', isVerified);
+    });
+
+    // Form Submit Logic
+    document.getElementById('regForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const pass = passwordInput.value;
+      const isValidPass = pass.length >= 8 && 
+                          /[A-Z]/.test(pass) && 
+                          /[a-z]/.test(pass) && 
+                          /[?!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pass);
+
+      if (!isValidPass) {
+        alert('Please satisfy all password conditions before registering!');
+        return;
+      }
+
+      if (!isVerified) {
+        alert('Please check the verification mark circle to proceed!');
+        return;
+      }
+
+      // Save user to LocalStorage
+      const userData = {
+        name: document.getElementById('fullname').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        password: pass
+      };
+
+      localStorage.setItem('registeredUser', JSON.stringify(userData));
+      sessionStorage.setItem('isLoggedIn', 'true');
+      
+      alert('Registration successful! Redirecting to Library...');
+      
+      // Auto Login & Redirect
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+  </html>
